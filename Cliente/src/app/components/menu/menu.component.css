@@ -146,3 +146,20 @@ button[mat-icon-button] {
   width: 100%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.btn-regresar {
+   /* Posición absoluta para que esté sobre el mapa */
+  height: auto;
+  width: 500px;
+  padding: 10px 20px;
+  background-color: #007bff; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000; /* Asegúrate de que esté por encima del mapa */
+}
+
+.btn-regresar:hover {
+  background-color: #0056b3; /* Color de fondo al pasar el mouse */
+}
