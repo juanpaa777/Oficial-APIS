@@ -66,6 +66,8 @@
     <div class="content-section" [ngClass]="{'full-width': isSidebarHidden}">
       <div *ngIf="showNoticias" class="seccion-noticias">
         <h2>Noticias de la Biblioteca</h2>
+        <button class="btn-regresar" (click)="verEventosCercanos()" >Mapa</button>
+        <br><br>
         <div class="noticias-grid">
           <div *ngFor="let noticia of noticiasItems" class="noticia-item">
             <h3>{{ noticia.titulo }}</h3>
