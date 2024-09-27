@@ -90,8 +90,8 @@ button[mat-icon-button] {
 }
 
 .content-section {
-  flex-grow: 2;
-  margin-left: 220px;
+  flex-grow: 2; /* Asegúrate de que esta propiedad esté presente */
+  margin-left: 220px; /* Asegúrate de que este margen coincida con el ancho de la sidebar */
   padding: 20px;
   background-image: url('https://static.vecteezy.com/system/resources/previews/001/886/051/non_2x/color-books-seamless-pattern-background-vector.jpg');
   background-size: cover;
@@ -99,7 +99,6 @@ button[mat-icon-button] {
   overflow-y: auto;
   min-height: calc(100vh - 60px - 40px); /* Ajustado para la altura de navbar y footer */
 }
-
 .content-section.full-width {
   margin-left: 0; /* Expande el contenido cuando la sidebar está oculta */
 }
@@ -117,7 +116,46 @@ button[mat-icon-button] {
   gap: 20px;
 }
 
+
+
+
+
+.footer {
+  background-color: #ffffff;
+  padding: 20px 0;
+  text-align: center;
+  color: #2B6ADF;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-regresar {
+  height: auto;
+  width: 500px;
+  padding: 10px 20px;
+  background-color: #007bff; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000; /* Asegúrate de que esté por encima del mapa */
+}
+
+.btn-regresar:hover {
+  background-color: #0056b3; /* Color de fondo al pasar el mouse */
+}
+.noticias-carousel {
+  display: flex;
+  overflow-x: auto; /* Permite el desplazamiento horizontal */
+  scroll-behavior: smooth; /* Suaviza el desplazamiento */
+  padding: 10px 0;
+}
+
 .noticia-item {
+  min-width: 300px; /* Ancho mínimo para cada noticia */
+  margin-right: 20px; /* Espaciado entre noticias */
   background-color: white;
   border-radius: 5px;
   padding: 15px;
@@ -135,30 +173,46 @@ button[mat-icon-button] {
   border-radius: 5px;
   margin-bottom: 10px;
 }
+.carrusel-noticias {
+  margin: 20px 0;
+  overflow: hidden; /* Oculta el desbordamiento */
+  display: none; /* Oculta el carrusel por defecto */
+}
 
-.footer {
-  background-color: #ffffff;
-  padding: 20px 0;
-  text-align: center;
+.noticias-carousel {
+  display: flex;
+  overflow-x: hidden; /* Oculta el desbordamiento horizontal */
+  scroll-behavior: smooth; /* Suaviza el desplazamiento */
+  padding: 10px 0;
+}
+
+/* Asegúrate de que el carrusel solo se muestre cuando showNoticias es verdadero */
+.show {
+  display: flex; /* Muestra el carrusel cuando se aplica esta clase */
+}
+.noticia-item {
+  min-width: 400px; /* Aumenta el ancho mínimo para cada noticia */
+  margin-right: 20px; /* Espaciado entre noticias */
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px; /* Aumenta el padding */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2); /* Mejora la sombra */
+  transition: transform 0.3s; /* Añade transición para el efecto hover */
+}
+
+.noticia-item:hover {
+  transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
+}
+
+.noticia-item h3 {
+  margin-top: 0;
   color: #2B6ADF;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.btn-regresar {
-  /* Posición absoluta para que esté sobre el mapa */
- height: auto;
- width: 500px;
- padding: 10px 20px;
- background-color: #007bff; /* Color de fondo */
- color: white; /* Color del texto */
- border: none;
- border-radius: 5px;
- cursor: pointer;
- z-index: 1000; /* Asegúrate de que esté por encima del mapa */
 }
 
-.btn-regresar:hover {
- background-color: #0056b3; /* Color de fondo al pasar el mouse */
+.noticia-item img {
+  width: 100%; /* Asegúrate de que la imagen ocupe todo el ancho del contenedor */
+  height: 200px; /* Establece una altura fija para las imágenes */
+  object-fit: cover; /* Asegura que la imagen cubra el área del contenedor sin distorsionarse */
+  border-radius: 5px; /* Mantiene el borde redondeado */
+  margin-bottom: 10px;
 }

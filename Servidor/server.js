@@ -104,7 +104,41 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// Añadir una nueva noticia
+app.post('/noticias', (req, res) => {
+  const { titulo, contenido, imagen } = req.body;
 
+  // Verificar que los campos no estén vacíos
+  if (!titulo || !contenido) {
+    return res.status(400).send({ message: 'Título y contenido son obligatorios' });
+  }
+
+  const query = 'INSERT INTO Noticias (Titulo, Contenido, Imagen) VALUES (?, ?, ?)';
+  pool.query(query, [titulo, contenido, imagen], (err) => {
+    if (err) {
+      console.error('Error al insertar la noticia:', err); // Agregar log para depuración
+      return res.status(500).send({ message: 'Error interno del servidor' });
+    }
+    res.status(201).send({ message: 'Noticia agregada exitosamente' });
+  });
+});
+
+// Obtener todas las noticias
+app.get('/noticias', (req, res) => {
+  pool.query('SELECT * FROM Noticias', (err, results) => {
+    if (err) return res.status(500).send({ message: 'Error interno del servidor' });
+    res.status(200).send(results);
+  });
+});
+
+// Eliminar una noticia
+app.delete('/noticias/:id', (req, res) => {
+  const { id } = req.params;
+  pool.query('DELETE FROM Noticias WHERE IdNoticia = ?', [id], (err) => {
+    if (err) return res.status(500).send({ message: 'Error interno del servidor' });
+    res.status(200).send({ message: 'Noticia eliminada exitosamente' });
+  });
+});
 // Función para generar un token 
 function generateToken(user) {
   // Implementa la lógica para generar un token, por ejemplo usando jsonwebtoken

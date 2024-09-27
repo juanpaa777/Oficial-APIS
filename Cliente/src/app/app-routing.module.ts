@@ -35,7 +35,8 @@ const routes: Routes = [
   {path: 'registro', component: RegistroBibiotecariosComponent, canActivate: [AuthGuard] },
   {path: 'lector', component: RegistroLectorComponent, canActivate: [AuthGuard] },
   {path: 'personalizado', component: PersonalisadoComponent, canActivate: [AuthGuard] },
-  { path: 'mapa', component: MapaComponent, canActivate: [AuthGuard] }, // Asegúrate de que esta línea esté presente
+  { path: 'mapa', component: MapaComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }, 
   
 
 ];

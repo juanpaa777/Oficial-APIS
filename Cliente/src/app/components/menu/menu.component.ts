@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { SidebarService } from '../menu/Options/Services/sidebar.services';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router'; 
@@ -8,29 +8,40 @@ import { Router } from '@angular/router';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit, OnDestroy {
+  // Estado de las vistas
   isSidebarHidden = false;
   showSearch = false;
   showNewBooks = false;
   showMultas = false;
-  showRegistro = false;
+  showRegistroBibliotecarios = false; // Cambia showRegistro por un nombre específico
   isDropdownVisible = false;
   showLectores = false;
   showReporte = false;
   isFooterVisible = false;
-  showNoticias = true; // Inicialmente mostramos las noticias
-  showDevolucionDeLibros = false; // Asegúrate de que esta propiedad esté definida
+  showNoticias = false;
+  showDevolucionDeLibros = false;
+  showGestionNoticias = false; // Nueva variable específica para gestionar noticias
   noticiasItems: any[] = [];
-   
+  private intervalId: any;
+
   constructor(private sidebarService: SidebarService, private http: HttpClient, private router: Router) {
     this.sidebarService.sidebarHidden$.subscribe(hidden => this.isSidebarHidden = hidden);
+  }
+
+  ngOnInit() {
     this.cargarNoticias();
+    this.iniciarDesplazamiento();
+    this.showCarruselNoticias(); // Muestra el carrusel de noticias al iniciar
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalId); // Limpia el intervalo
   }
 
   toggleSidebar() {
     this.sidebarService.toggleSidebar();
   }
-
   showSearchBooks() {
     this.resetViews();
     this.showSearch = true;
@@ -48,7 +59,7 @@ export class MenuComponent {
 
   showRegistroBlibliotecarios() {
     this.resetViews();
-    this.showRegistro = true;
+    this.showRegistroBibliotecarios = true;
   }
 
   showRegistroLectores() {
@@ -61,10 +72,16 @@ export class MenuComponent {
     this.showReporte = true;
   }
 
-  showNoticiasSection() {
+  showGestionarNoticias() {
     this.resetViews();
-    this.showNoticias = true;
+    this.showGestionNoticias = true; // Controla el componente de gestión de noticias
+    this.cargarNoticias();
   }
+showCarruselNoticias() {
+  this.resetViews(); // Resetea otras vistas
+  this.showNoticias = true; // Muestra el carrusel de noticias
+}
+
 
   mostrarDevolucionDeLibros() {
     this.resetViews();
@@ -72,6 +89,7 @@ export class MenuComponent {
   }
 
   verEventosCercanos() { // Nuevo método para redirigir al mapa
+    this.resetViews(); // Asegúrate de que se llame a resetViews aquí
     this.router.navigate(['/mapa']); // Asegúrate de que la ruta '/mapa' esté configurada en tu enrutador
   }
 
@@ -88,45 +106,41 @@ export class MenuComponent {
     this.router.navigate(['/home']); // Redirige a la página de inicio de sesión
   }
 
-  private resetViews() {
-    this.showSearch = false;
-    this.showNewBooks = false;
-    this.showMultas = false;
-    this.showRegistro = false;
-    this.showLectores = false;
-    this.showReporte = false;
-    this.showNoticias = false;
-    this.showDevolucionDeLibros = false; // Resetea la propiedad de devolución de libros
-  }
+// Método para resetear las vistas
+private resetViews() {
+  this.showNoticias = false;
+  this.showSearch = false;
+  this.showNewBooks = false;
+  this.showMultas = false;
+  this.showRegistroBibliotecarios = false; // Cambiado para bibliotecarios
+  this.showLectores = false;
+  this.showReporte = false;
+  this.showDevolucionDeLibros = false;
+  this.showGestionNoticias = false; // Asegúrate de resetear esta vista también
+}
 
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
-    const body = document.body;
-    const html = document.documentElement;
-    const docHeight = Math.max(body.clientHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-    const windowBottom = windowHeight + window.pageYOffset;
-    this.isFooterVisible = windowBottom >= docHeight;
-  }
+@HostListener('window:scroll', [])
+onWindowScroll() {
+  const windowHeight = window.innerHeight || document.documentElement.offsetHeight;
+  const docHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  const windowBottom = windowHeight + window.pageYOffset;
+  this.isFooterVisible = windowBottom >= docHeight;
+}
 
-  private cargarNoticias() {
-    // Simulando una llamada a API con datos de ejemplo
-    this.noticiasItems = [
-      {
-        titulo: "Nueva colección de libros clásicos",
-        contenido: "La biblioteca ha adquirido una colección completa de obras clásicas de la literatura universal.",
-        imagen: "https://th.bing.com/th/id/R.366ae01b84a07de654d63ff8d003e6e9?rik=KNu3PH45d08DIQ&pid=ImgRaw&r=0"
-      },
-      {
-        titulo: "Taller de escritura creativa",
-        contenido: "Este mes iniciamos un taller gratuito de escritura creativa para todos los miembros de la biblioteca.",
-        imagen: "https://th.bing.com/th/id/OIP.9xsLdr8m03Ef9T9VErpbhQHaJv?rs=1&pid=ImgDetMain"
-      },
-      {
-        titulo: "Ampliación del horario de apertura",
-        contenido: "A partir del próximo mes, la biblioteca estará abierta hasta las 22:00 horas de lunes a viernes.",
-        imagen: "https://diarioeducacion.com/wp-content/uploads/2023/06/NUEVOS-LIBROS-DE-TXTOS-2024-205-PRIMER-GRADO.jpg"
-      }
-    ];
-  }
+private cargarNoticias() {
+  this.http.get<any[]>('http://localhost:3000/noticias').subscribe(data => {
+    this.noticiasItems = data;
+  }, error => {
+    console.error('Error al cargar noticias:', error);
+  });
+}
+
+private iniciarDesplazamiento() {
+  this.intervalId = setInterval(() => {
+    const carousel = document.querySelector('.noticias-carousel') as HTMLElement;
+    if (carousel) {
+      carousel.scrollBy({ left: 400, behavior: 'smooth' });
+    }
+  }, 3000);
+}
 }

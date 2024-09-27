@@ -29,6 +29,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorComponent } from './components/home/error/error.component';
 import { DevolucionDeLibrosComponent } from './components/menu/Options/devolucion-de-libros/devolucion-de-libros.component';
 import { MapaComponent } from './components/mapa/mapa.component';
+import { NoticiasComponent } from './components/menu/Options/noticias/noticias.component';
 
 
 
@@ -49,7 +50,9 @@ import { MapaComponent } from './components/mapa/mapa.component';
     ErrorComponent,
     DevolucionDeLibrosComponent,
     AppComponent,
-    MapaComponent
+    MapaComponent,
+    NoticiasComponent,
+    
     
   ],
   imports: [

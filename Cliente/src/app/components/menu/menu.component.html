@@ -6,7 +6,7 @@
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR8YrcFCPbj_x4P9KKtC7L4eH8NMNV8NDE2Q&s" 
          alt="Logo UTNG" 
          class="logo" 
-         (click)="showNoticiasSection()">    
+         (click)="showCarruselNoticias()">    
     <div>
       <div class="image-container">
         <button mat-icon-button [matMenuTriggerFor]="Notification">
@@ -51,32 +51,30 @@
   <div class="main-layout">
     <div class="sidebar" id="sidebar" [ngClass]="{'hidden': isSidebarHidden}">
       <ul>
-        <li><a (click)="showNoticiasSection()">Inicio</a></li>
+        <li><a (click)="showCarruselNoticias()">Inicio</a></li>
         <li><a (click)="showSearchBooks()">Buscar libros</a></li>
         <li><a (click)="showRegistroLectores()">Registrar lectores</a></li>
         <li><a (click)="showNewBook()">Registrar libros</a></li>
         <li><a (click)="showMulta()">Gestionar Multas</a></li>
         <li><a (click)="showPersonalisado()">Generar reporte</a></li>
+        <li><a (click)="showGestionarNoticias()">Gestionar Noticias</a></li>
         <li><a (click)="showRegistroBlibliotecarios()">Nuevos Bibliotecarios</a></li>
         <li><a (click)="mostrarDevolucionDeLibros()">Devolver Libros</a></li>
-        <li><a (click)="verEventosCercanos()">Ver eventos cercanos</a></li> <!-- Nuevo botón -->
+        <li><a (click)="verEventosCercanos()">Ver eventos cercanos</a></li>
       </ul>
     </div>
 
     <div class="content-section" [ngClass]="{'full-width': isSidebarHidden}">
-      <div *ngIf="showNoticias" class="seccion-noticias">
-        <h2>Noticias de la Biblioteca</h2>
-        <button class="btn-regresar" (click)="verEventosCercanos()" >Mapa</button>
-        <br><br>
-        <div class="noticias-grid">
-          <div *ngFor="let noticia of noticiasItems" class="noticia-item">
-            <h3>{{ noticia.titulo }}</h3>
-            <img [src]="noticia.imagen" [alt]="noticia.titulo">
-            <p>{{ noticia.contenido }}</p>
+      <div *ngIf="showNoticias" class="carrusel-noticias show">
+        <div class="noticias-carousel">
+          <div class="noticia-item" *ngFor="let noticia of noticiasItems">
+            <h3>{{ noticia.Titulo }}</h3>
+            <p>{{ noticia.Contenido }}</p>
+            <img *ngIf="noticia.Imagen" [src]="noticia.Imagen" alt="{{ noticia.Titulo }}" />
           </div>
         </div>
       </div>
-
+      
       <div *ngIf="showSearch">
         <app-search-books></app-search-books>
       </div>
@@ -86,7 +84,7 @@
       <div *ngIf="showMultas">
         <app-multas></app-multas>
       </div>
-      <div *ngIf="showRegistro">
+      <div *ngIf="showRegistroBibliotecarios">
         <app-bibliotecarios></app-bibliotecarios>
       </div>
       <div *ngIf="showLectores">
@@ -97,6 +95,9 @@
       </div>
       <div *ngIf="showDevolucionDeLibros">
         <app-devolucion-de-libros></app-devolucion-de-libros>
+      </div>
+      <div *ngIf="showGestionNoticias">
+        <app-noticias></app-noticias>
       </div>
     </div>
   </div>
